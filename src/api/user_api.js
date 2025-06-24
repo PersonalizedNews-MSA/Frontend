@@ -174,17 +174,17 @@ export const getUserFavorites = async () => {
 
 export const logout = async () => {
   try {
-    const refreshToken = localStorage.getItem("refreshToken");
+    // const refreshToken = localStorage.getItem("refreshToken");
     const accessToken = localStorage.getItem("accessToken");
 
-    const response = await instance.delete("/logout", {
+    const response = await instance.delete("/api/user/v1/logout", {
       headers: {
-        refreshToken: `${refreshToken}`,
+        // refreshToken: `${refreshToken}`,
         Authorization: `Bearer ${accessToken}`,
       },
     });
     localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
+    // localStorage.removeItem("refreshToken");
     return response.data;
   } catch (error) {
     console.log(error);
