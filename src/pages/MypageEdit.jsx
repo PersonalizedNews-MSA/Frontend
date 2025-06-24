@@ -21,7 +21,7 @@ import { CgProfile } from "react-icons/cg";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import useUser from "../lib/useUser";
-import { getUserInterests, editUser } from "../api/user_api";
+import { getUserInterests, editUser, putInterest} from "../api/user_api";
 import { useForm } from "react-hook-form";
 
 const MypageEdit = () => {
@@ -64,9 +64,11 @@ const MypageEdit = () => {
     try {
       const payload = {
         ...data,
-        interests: keywords,
       };
       const res = await editUser(payload);
+      if (keywords && keywords.length > 0) {
+      await putInterest(keywords);
+      }
       navigate("/mypage");
     } catch (err) {
       console.error("❌ 회원수정 실패 ❌:", err);

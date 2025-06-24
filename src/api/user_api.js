@@ -61,15 +61,13 @@ export const checkEmail = async (email) => {
 };
 
 
-export const addInterest = async ({ userId, keywords }) => {
+export const addInterest = async ({keywords}) => {
   console.log("Add Interest API 호출");
-  console.log("UserId :" + userId);
   console.log("Name :" + keywords);
   try {
     const response = await instance.post(
-      "/interest",
+      "/api/interests/v1/",
       {
-        userId,
         name: keywords,
       },
       { headers: { "Content-Type": "application/json" } }
@@ -80,12 +78,11 @@ export const addInterest = async ({ userId, keywords }) => {
   }
 };
 
-export const deleteInterest = async ({ userId, removeKeyword }) => {
+export const deleteInterest = async ({removeKeyword }) => {
   console.log("Delete Interest API 호출");
-  console.log("UserId :" + userId);
   console.log("Name :" + removeKeyword);
   try {
-    const response = await instance.delete(`/interest/delete/${userId}`, {
+    const response = await instance.delete(`/api/interests/v1/`, {
       data: {
         name: removeKeyword,
       },
@@ -118,12 +115,12 @@ export const getMe = async () => {
   }
 };
 
-export const editUser = async ({ name, email, interests }) => {
+export const editUser = async ({ name, email }) => {
   try {
     const accessToken = localStorage.getItem("accessToken");
     const response = await instance.put(
       `/user`,
-      { name, email, interests },
+      { name, email},
       {
         headers: {
           "Content-Type": "application/json",
@@ -203,7 +200,7 @@ export const getUserInterests = async () => {
     const decode = jwtDecode(accessToken);
     console.log("userId : " + decode.userId);
 
-    const response = await instance.get(`/interest/${decode.userId}`, {
+    const response = await instance.get(`/api/interests/v1/`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
@@ -212,6 +209,24 @@ export const getUserInterests = async () => {
     return response.data;
   } catch (error) {
     console.log(error);
+    throw error.response ? error.response.data : error;
+  }
+};
+
+
+export const putInterest = async ({keywords}) => {
+  console.log("Add Interest API 호출");
+  console.log("Name :" + keywords);
+  try {
+    const response = await instance.put(
+      "/api/interests/v1/",
+      {
+        name: keywords,
+      },
+      { headers: { "Content-Type": "application/json" } }
+    );
+    return response.data;
+  } catch (error) {
     throw error.response ? error.response.data : error;
   }
 };
