@@ -4,6 +4,23 @@ import instance from "./axiosInstance";
 
 // UNAUTHORIZED APIS
 
+//TODO: 관심사 등록 API
+export const postInterest = async ({ interests }) => {
+  console.log("관심사 등록 API 호출");
+  console.log("keywords :" + interests);
+  try {
+    const response = await instance.post(
+      "/api/interests/v1",
+      {
+        name: interests,
+      },
+      { headers: { "Content-Type": "application/json" } }
+    );
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : error;
+  }
+};
 export const login = async ({ email, password }) => {
   console.log("Login API 호출");
   console.log("Email :" + email);
@@ -23,19 +40,18 @@ export const login = async ({ email, password }) => {
   }
 };
 
-export const signup = async ({ email, password, name, interests }) => {
+export const signup = async ({ email, password, name }) => {
   console.log("Signup API 호출");
   console.log("Email :" + email);
   console.log("Password :" + password);
   console.log("Name :" + name);
   try {
     const response = await instance.post(
-      "/sign-up",
+      "/api/user/v1/auth/signup",
       {
         email,
         password,
         name,
-        interests,
       },
       { headers: { "Content-Type": "application/json" } }
     );
@@ -45,21 +61,19 @@ export const signup = async ({ email, password, name, interests }) => {
   }
 };
 
-
 export const checkEmail = async (email) => {
   console.log("Check Email API 호출:", email);
   try {
     const response = await instance.post(
-      "/email",
+      "/api/user/v1/auth/email-check",
       { email },
       { headers: { "Content-Type": "application/json" } }
     );
-    return response.data;         
+    return response.data;
   } catch (error) {
     throw error.response?.data || error;
   }
 };
-
 
 export const addInterest = async ({ userId, keywords }) => {
   console.log("Add Interest API 호출");

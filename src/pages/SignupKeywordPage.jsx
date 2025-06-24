@@ -10,17 +10,13 @@ import {
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
-
+import { postInterest } from "../api/user_api";
 import myLogo from "../assets/myLogo.png";
 import { useState } from "react";
 import { IoIosAddCircleOutline } from "react-icons/io";
-import { useLocation, useNavigate } from "react-router-dom";
-
-import { signup } from "../api/user_api";
+import { useNavigate } from "react-router-dom";
 
 const SignupKeywordPage = () => {
-  const location = useLocation();
-  const state = location.state;
   const navigate = useNavigate();
 
   const [keyword, setKeyword] = useState("");
@@ -105,12 +101,7 @@ const SignupKeywordPage = () => {
             width="full"
             onClick={async () => {
               try {
-                const res = signup({
-                  email: state.email,
-                  password: state.password,
-                  name: state.name,
-                  interests: keywords,
-                });
+                await postInterest({ keywords });
                 navigate("/login");
               } catch (err) {
                 console.error("❌ 키워드 추가 실패 ❌:", err);

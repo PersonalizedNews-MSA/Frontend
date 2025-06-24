@@ -13,7 +13,7 @@ import myLogo from "../assets/myLogo.png";
 import { PasswordInput } from "../components/ui/password-input";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { checkEmail } from "../api/user_api";
+import { checkEmail, signup } from "../api/user_api";
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -27,6 +27,7 @@ const SignupPage = () => {
   const password = watch("password");
 
   const onSubmit = async (data) => {
+    console.log(data);
     try {
       const { exist } = await checkEmail(data.email);
       if (exist) {
@@ -44,10 +45,15 @@ const SignupPage = () => {
       });
       return;
     }
+    await signup({
+      email: data.email,
+      password: data.password,
+      name: data.name,
+    });
 
     try {
       console.log("Keyword 추가 페이지로 이동");
-      navigate("/signup/keywords", { state: data });
+      navigate("/signup/keywords");
     } catch (err) {
       console.error("❌ 회원가입 실패 ❌:", err);
     }
@@ -85,11 +91,12 @@ const SignupPage = () => {
               <PasswordInput
                 {...register("password", {
                   required: "비밀번호는 필수입니다",
-                  minLength: { value: 6, message: "최소 6자 이상 입력하세요." },
+                  minLength: { value: 8, message: "최소 8자 이상 입력하세요." },
                   pattern: {
-                    value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/,
+                    value:
+                      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+=-]).{8,20}$/,
                     message:
-                      "영문자와 숫자를 조합하여 최소 6자 이상이어야 합니다.",
+                      "영문자와 숫자를 조합하여 최소 8자 이상이어야 합니다.",
                   },
                 })}
                 variant="flushed"
