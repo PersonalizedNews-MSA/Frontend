@@ -10,11 +10,11 @@ import {
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
-import { postInterest } from "../api/user_api";
 import myLogo from "../assets/myLogo.png";
 import { useState } from "react";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import { postInterest } from "../api/interests_api";
 
 const SignupKeywordPage = () => {
   const navigate = useNavigate();

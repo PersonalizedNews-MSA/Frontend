@@ -4,23 +4,6 @@ import instance from "./axiosInstance";
 
 // UNAUTHORIZED APIS
 
-//TODO: 관심사 등록 API
-export const postInterest = async ({ interests }) => {
-  console.log("관심사 등록 API 호출");
-  console.log("keywords :" + interests);
-  try {
-    const response = await instance.post(
-      "/api/interests/v1",
-      {
-        name: interests,
-      },
-      { headers: { "Content-Type": "application/json" } }
-    );
-    return response.data;
-  } catch (error) {
-    throw error.response ? error.response.data : error;
-  }
-};
 export const login = async ({ email, password }) => {
   console.log("Login API 호출");
   console.log("Email :" + email);
@@ -116,10 +99,10 @@ export const getMe = async () => {
   try {
     const accessToken = localStorage.getItem("accessToken");
     console.log("accessToken : " + accessToken);
-    const decode = jwtDecode(accessToken);
-    console.log("userId : " + decode.userId);
+    // const decode = jwtDecode(accessToken);
+    // console.log("userId : " + decode.userId);
 
-    const response = await instance.get(`/user/${decode.userId}`, {
+    const response = await instance.get(`/api/user/v1/profile`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
@@ -136,8 +119,8 @@ export const editUser = async ({ name, email, interests }) => {
   try {
     const accessToken = localStorage.getItem("accessToken");
     const response = await instance.put(
-      `/user`,
-      { name, email, interests },
+      `/api/user/v1/name`,
+      { name, email },
       {
         headers: {
           "Content-Type": "application/json",
@@ -210,22 +193,22 @@ export const deleteAccount = async () => {
   }
 };
 
-export const getUserInterests = async () => {
-  try {
-    const accessToken = localStorage.getItem("accessToken");
-    console.log("accessToken : " + accessToken);
-    const decode = jwtDecode(accessToken);
-    console.log("userId : " + decode.userId);
+// export const getUserInterests = async () => {
+//   try {
+//     const accessToken = localStorage.getItem("accessToken");
+//     console.log("accessToken : " + accessToken);
+//     const decode = jwtDecode(accessToken);
+//     console.log("userId : " + decode.userId);
 
-    const response = await instance.get(`/interest/${decode.userId}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.log(error);
-    throw error.response ? error.response.data : error;
-  }
-};
+//     const response = await instance.get(`/interest/${decode.userId}`, {
+//       headers: {
+//         "Content-Type": "application/json",
+//         Authorization: `Bearer ${accessToken}`,
+//       },
+//     });
+//     return response.data;
+//   } catch (error) {
+//     console.log(error);
+//     throw error.response ? error.response.data : error;
+//   }
+// };

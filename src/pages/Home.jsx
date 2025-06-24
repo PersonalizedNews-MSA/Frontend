@@ -2,8 +2,9 @@ import { Box, Text, VStack, Flex } from "@chakra-ui/react";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import NewsList from "../components/NewsList"; // 경로 맞춰주세요
-import { getUserInterests } from "../api/user_api";
+// import { getUserInterests } from "../api/user_api";
 import React, { useEffect, useState } from "react";
+import { getInterest } from "../api/interests_api";
 
 const Home = () => {
   const [interests, setInterests] = useState([]);
@@ -12,7 +13,7 @@ const Home = () => {
   useEffect(() => {
     const fetchInterests = async () => {
       try {
-        const data = await getUserInterests();
+        const data = await getInterest();
         setInterests(data);
       } catch {
         setInterests([]);
