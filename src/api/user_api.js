@@ -27,7 +27,7 @@ export const login = async ({ email, password }) => {
   console.log("Password :" + password);
   try {
     const response = await instance.post(
-      "/login",
+      "/api/user/v1/auth/login",
       {
         email,
         password,
