@@ -196,13 +196,13 @@ export const deleteAccount = async () => {
   try {
     const accessToken = localStorage.getItem("accessToken");
 
-    const response = await instance.delete("/user", {
+    const response = await instance.delete("/api/user/v1/signout", {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     });
     localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
+    // localStorage.removeItem("refreshToken");
     return response.data;
   } catch (error) {
     console.log(error);
