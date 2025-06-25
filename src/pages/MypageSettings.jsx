@@ -90,6 +90,7 @@ const MypageSettings = () => {
               onClick={async () => {
                 try {
                   await deleteAccount();
+
                   navigate("/");
                 } catch (err) {
                   console.error("❌ 회원 탈퇴 실패 ❌:", err);

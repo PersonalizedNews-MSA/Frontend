@@ -38,8 +38,25 @@ export const putInterest = async ({ interests }) => {
     throw error.response ? error.response.data : error;
   }
 };
+//TODO: 관심사 삭제 API
+export const deleteInterest = async () => {
+  console.log("관심사 삭제 API 호출");
+  try {
+    const accessToken = localStorage.getItem("accessToken");
+    const response = await instance.delete(`api/interests/v1`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error.response ? error.response.data : error;
+  }
+};
 //TODO: 관심사 요청  API
-export const getInterest = async ({ interests }) => {
+export const getInterest = async () => {
   console.log("관심사 수정 API 호출");
   try {
     const accessToken = localStorage.getItem("accessToken");
