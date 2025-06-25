@@ -70,49 +70,46 @@ const Footer = () => {
           direction={{ base: "column", md: "row" }}
           gap={{ base: 10, md: 60 }}
         >
-          {/* Frontend */}
           <VStack align="start" spacing={1}>
-            <Text fontWeight="bold" mb={2}>
-              Frontend
-            </Text>
             <Link
-              href="https://github.com/ku0629"
+              href="https://github.com/seoyoun8694"
               target="_blank"
               color="white"
-            >구민</Link>
+            >
+              채서윤
+            </Link>
             <Link
-              href="https://github.com/5ohmydays5"
+              href="https://github.com/wkdnffla3"
               target="_blank"
               color="white"
-            >오장현</Link>
+            >
+              박찬규
+            </Link>
             <Link
-              href="https://github.com/Junho0225"
+              href="https://github.com/soobin70"
               target="_blank"
               color="white"
-            >이준호</Link>
+            >
+              조수빈
+            </Link>
           </VStack>
 
-          {/* Backend */}
           <VStack align="start" spacing={1} pr={36}>
-            <Text fontWeight="bold" mb={2}>
-              Backend
-            </Text>
             <Link
-              href="https://github.com/Bucoco"
+              href="https://github.com/Sunhokim2"
               target="_blank"
               color="white"
-            >남윤호</Link>
+            >
+              김선호
+            </Link>
 
             <Link
-              href="https://github.com/haribonyam"
+              href="https://github.com/whl5105"
               target="_blank"
               color="white"
-            >심규환</Link>
-            <Link
-              href="https://github.com/syjungsuyeon"
-              target="_blank"
-              color="white"
-            >정수연</Link>
+            >
+              최수인
+            </Link>
           </VStack>
         </Flex>
       </Flex>
