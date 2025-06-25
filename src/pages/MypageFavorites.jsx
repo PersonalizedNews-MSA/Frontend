@@ -11,7 +11,6 @@ import * as Dialog from "@radix-ui/react-dialog";
 
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
-import { jwtDecode } from "jwt-decode";
 import { useEffect, useRef, useState } from "react";
 import instance from "../api/axiosInstance";
 import Logo from "../assets/myLogo.png";
@@ -27,22 +26,7 @@ const MypageFavorites = () => {
 
   const [favoritesMap, setFavoritesMap] = useState({});
   const [articles, setArticles] = useState([]);
-  const [loadingArticles, setLoadingArticles] = useState(true);
-  const fetchNews = async () => {
-    try {
-      const accessToken = localStorage.getItem("accessToken");
-      const decode = jwtDecode(accessToken);
-      const userId = decode?.userId;
-      const res = await instance.get(`${userId}/favorites`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
-      setArticles(res.data);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoadingArticles(false);
-    }
-  };
+
   useEffect(() => {
     if (selectedIndex === null) {
       setSummary("");
@@ -68,30 +52,19 @@ const MypageFavorites = () => {
       }
     })();
   }, [selectedIndex, articles]);
-  useEffect(() => {
-    const loadFavoritesAndArticles = async () => {
-      try {
-        setLoadingArticles(true);
-        const favs = await getMyFavorites();
-        const map = {};
-        favs.forEach((f) => (map[f.newsLink] = f));
-        setFavoritesMap(map);
 
-        const accessToken = localStorage.getItem("accessToken");
-        const decode = jwtDecode(accessToken);
-        const userId = decode?.userId;
-        const res = await instance.get(`${userId}/favorites`, {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        });
-        setArticles(res.data);
+  useEffect(() => {
+    const favorites = async () => {
+      try {
+        const res = await getMyFavorites();
+        setFavoritesMap(res);
+        setArticles(res);
       } catch (err) {
-        console.error(err);
-      } finally {
-        setLoadingArticles(false);
+        console.error("❌ 유저 좋아요 가져오기 실패 ❌:", err);
       }
     };
 
-    loadFavoritesAndArticles();
+    favorites();
   }, []);
 
   return (
@@ -188,7 +161,7 @@ const MypageFavorites = () => {
                     >
                       #{index + 1} - {article.newsTitle}
                     </Dialog.Title>
-                    
+
                     <Text fontSize="sm" color="gray.500" mb={4}>
                       {article.pubDate}
                     </Text>

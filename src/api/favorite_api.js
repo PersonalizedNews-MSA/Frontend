@@ -1,33 +1,59 @@
 import instance from "./axiosInstance";
-import { jwtDecode } from "jwt-decode";
-
-//JWT, UserId
-function authHeader() {
-    const token = localStorage.getItem("accessToken");
-    const { userId } = jwtDecode(token);
-    return {
-        headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-        },
-        userId,
-    };
-}
 
 export async function getMyFavorites() {
-    const { headers, userId } = authHeader();
-    const res = await instance.get(`/${userId}/favorites`, { headers });
-    return res.data; // array of FavoriteResponseDto
+    const accessToken = localStorage.getItem("accessToken");
+    try {
+        const response = await instance.get("/api/favorite/v1/",
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        )
+        return response.data;
+    } catch (error) {
+        throw error.response ? error.response.data : error;
+    }
 }
 
 export async function addFavorite({ newsLink, newsTitle, newsSummary, newsThumbnail, newsCategory }) {
-    const { headers, userId } = authHeader();
-    const payload = { userId, newsLink, newsTitle, newsSummary, newsThumbnail, newsCategory };
-    const res = await instance.post("/favorite", payload, { headers });
-    return res.data;
+    const accessToken = localStorage.getItem("accessToken");
+    try {
+        const response = await instance.post("/api/favorite/v1/",
+            {
+                newsTitle: newsTitle,
+                newsLink: newsLink,
+                newsSummary: newsSummary,
+                newsThumbnail: newsThumbnail,
+                newsCategory: newsCategory
+            },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        )
+        return response.data;
+    } catch (error) {
+        throw error.response ? error.response.data : error;
+    }
 }
 
 export async function removeFavorite(favoriteId) {
-    const { headers } = authHeader();
-    await instance.delete(`/favorite/${favoriteId}`, { headers });
+    const accessToken = localStorage.getItem("accessToken");
+    try {
+        const response = await instance.delete(`/api/favorite/v1/${favoriteId}`,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        )
+        return response.data;
+    } catch (error) {
+        throw error.response ? error.response.data : error;
+    }
 }

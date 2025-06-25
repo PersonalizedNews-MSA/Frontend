@@ -45,11 +45,13 @@ const SignupPage = () => {
       });
       return;
     }
-    await signup({
+
+    const res = await signup({
       email: data.email,
       password: data.password,
       name: data.name,
     });
+    localStorage.setItem("accessToken", res.data.accessToken.token);
 
     try {
       console.log("Keyword 추가 페이지로 이동");
@@ -140,7 +142,7 @@ const SignupPage = () => {
               colorScheme="teal"
               width="full"
             >
-              다음
+              회원가입
             </Button>
           </Stack>
         </form>

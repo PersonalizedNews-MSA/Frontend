@@ -11,8 +11,6 @@ import {
   Wrap,
   WrapItem,
   Tag,
-  Skeleton,
-  SkeletonText,
 } from "@chakra-ui/react";
 import { CiSettings } from "react-icons/ci";
 import { FaPlus } from "react-icons/fa6";
@@ -23,14 +21,14 @@ import NavBar from "../components/NavBar";
 import { Link } from "react-router-dom";
 
 import useUser from "../lib/useUser";
-import useUserFavorites from "../lib/useUserFavorites";
+import { getMyFavorites } from "../api/favorite_api";
 import { useEffect, useState } from "react";
 import { getInterest } from "../api/interests_api";
 
 const Mypage = () => {
   const { userLoading, user } = useUser();
-  const { favoritesLoading, favorites } = useUserFavorites();
   const [interestsRes, setInterestsRes] = useState([]);
+  const [favoritesMap, setFavoritesMap] = useState([]);
 
   useEffect(() => {
     const interests = async () => {
@@ -43,14 +41,23 @@ const Mypage = () => {
     };
 
     interests();
+
+    const favorites = async () => {
+      try {
+        const res = await getMyFavorites();
+        setFavoritesMap(res);
+      } catch (err) {
+        console.error("❌ 유저 좋아요 가져오기 실패 ❌:", err);
+      }
+    };
+
+    favorites();
   }, []);
 
   return (
     <Flex direction="column" minH="100vh">
       <NavBar />
-
       <Box px={16} flex="1">
-        {/* 상단 프로필 영역 */}
         <Flex
           bg="gray.100"
           p={10}
@@ -109,7 +116,6 @@ const Mypage = () => {
           </VStack>
         </Flex>
 
-        {/* 하단 뉴스 카드 영역 */}
         <Box
           border={"1px solid "}
           borderColor={"gray.200"}
@@ -139,47 +145,31 @@ const Mypage = () => {
             rowGap={12}
             columnGap={8}
           >
-            {favoritesLoading
-              ? Array(8)
-                  .fill(null)
-                  .map((_, index) => (
-                    <GridItem
-                      key={index}
-                      p={4}
-                      borderWidth="1px"
-                      borderRadius="lg"
-                      boxShadow="md"
-                    >
-                      <Skeleton height="180px" mb={4} />
-                      <SkeletonText noOfLines={1} spacing="4" mb={4} />
-                      <SkeletonText noOfLines={3} spacing="2" />
-                    </GridItem>
-                  ))
-              : favorites?.slice(0, 8).map((item) => (
-                  <GridItem
-                    key={item.id}
-                    p={4}
-                    borderWidth="1px"
-                    borderRadius="lg"
-                    boxShadow="md"
-                  >
-                    <Image
-                      src={item.newsThumbnail}
-                      alt={item.newsTitle}
-                      height="180px"
-                      width="100%"
-                      objectFit="cover"
-                      borderRadius="md"
-                      mb={4}
-                    />
-                    <Text fontWeight="bold" fontSize="xl" mb={2}>
-                      {item.newsTitle}
-                    </Text>
-                    <Text fontSize="sm" color="gray.600">
-                      {item.newsSummary}
-                    </Text>
-                  </GridItem>
-                ))}
+            {favoritesMap?.slice(0, 8).map((item) => (
+              <GridItem
+                key={item.id}
+                p={4}
+                borderWidth="1px"
+                borderRadius="lg"
+                boxShadow="md"
+              >
+                <Image
+                  src={item.newsThumbnail}
+                  alt={item.newsTitle}
+                  height="180px"
+                  width="100%"
+                  objectFit="cover"
+                  borderRadius="md"
+                  mb={4}
+                />
+                <Text fontWeight="bold" fontSize="xl" mb={2}>
+                  {item.newsTitle}
+                </Text>
+                <Text fontSize="sm" color="gray.600">
+                  {item.newsSummary}
+                </Text>
+              </GridItem>
+            ))}
           </Grid>
         </Box>
       </Box>

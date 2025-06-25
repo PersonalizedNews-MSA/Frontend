@@ -7,7 +7,7 @@ export const postInterest = async (interests) => {
   console.log("keywords :" + interests);
   try {
     const response = await instance.post(
-      "/api/interests/v1",
+      "/api/interests/v1/",
       {
         name: interests,
       },
@@ -22,13 +22,14 @@ export const postInterest = async (interests) => {
     throw error.response ? error.response.data : error;
   }
 };
+
 //TODO: 관심사 수정 API
-export const putInterest = async ({ interests }) => {
+export const putInterest = async ( interests ) => {
   console.log("관심사 수정 API 호출");
   try {
     const accessToken = localStorage.getItem("accessToken");
     const response = await instance.put(
-      `api/interests/v1`,
+      `/api/interests/v1/`,
       { name: interests },
       {
         headers: {
@@ -48,7 +49,7 @@ export const deleteInterest = async () => {
   console.log("관심사 삭제 API 호출");
   try {
     const accessToken = localStorage.getItem("accessToken");
-    const response = await instance.delete(`api/interests/v1`, {
+    const response = await instance.delete(`api/interests/v1/`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
@@ -65,7 +66,7 @@ export const getInterest = async () => {
   console.log("관심사 수정 API 호출");
   try {
     const accessToken = localStorage.getItem("accessToken");
-    const response = await instance.get(`api/interests/v1`, {
+    const response = await instance.get(`/api/interests/v1/`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,

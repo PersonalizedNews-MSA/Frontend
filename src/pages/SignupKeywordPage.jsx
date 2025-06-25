@@ -101,14 +101,15 @@ const SignupKeywordPage = () => {
             width="full"
             onClick={async () => {
               try {
+                console.log(keywords);
                 await postInterest(keywords);
-                navigate("/login");
+                navigate("/home");
               } catch (err) {
                 console.error("❌ 키워드 추가 실패 ❌:", err);
               }
             }}
           >
-            가입완료
+            등록 완료
           </Button>
         </Stack>
       </Box>

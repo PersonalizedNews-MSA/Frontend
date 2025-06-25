@@ -31,8 +31,7 @@ function LoginPage() {
     try {
       setLoginError("");
       const res = await login(data);
-      // 토큰 저장 예시 (LocalStorage 등)
-      localStorage.setItem("accessToken", res.accessToken);
+      localStorage.setItem("accessToken", res.data.accessToken.token);
       navigate("/home");
     } catch (err) {
       setLoginError("아이디 또는 비밀번호가 올바르지 않습니다");

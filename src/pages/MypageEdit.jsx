@@ -47,6 +47,7 @@ const MypageEdit = () => {
     formState: { errors },
   } = useForm();
 
+  console.log(keywords);
   useEffect(() => {
     const interests = async () => {
       try {
@@ -60,13 +61,17 @@ const MypageEdit = () => {
     interests();
   }, []);
   const navigate = useNavigate();
+
   const onSubmit = async (data) => {
     try {
       const payload = {
         ...data,
         interests: keywords,
       };
-      await editUser(payload);
+      console.log(data.name);
+      if (data.name && data.name.length > 0) {
+        await editUser(payload);
+      }
       if (keywords && keywords.length > 0) {
         await putInterest(keywords);
       }
@@ -75,6 +80,7 @@ const MypageEdit = () => {
       console.error("❌ 회원수정 실패 ❌:", err);
     }
   };
+
   return (
     <Box>
       <NavBar />
@@ -110,7 +116,7 @@ const MypageEdit = () => {
               <Field.Label>Username</Field.Label>
               <Input
                 {...register("name")}
-                defaultValue={userLoading ? "" : user?.name}
+                defaultValue={userLoading ? "" : user?.data.name}
                 placeholder={userLoading ? "Loading" : user?.name}
               />
               <Field.ErrorText>Username is required.</Field.ErrorText>
@@ -119,7 +125,7 @@ const MypageEdit = () => {
               <Field.Label>Email</Field.Label>
               <Input
                 disabled
-                defaultValue={userLoading ? "" : user?.email}
+                defaultValue={userLoading ? "" : user?.data.email}
                 {...register("email")}
                 placeholder={userLoading ? "Loading" : user?.email}
               />

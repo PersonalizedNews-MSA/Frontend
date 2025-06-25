@@ -80,12 +80,12 @@ export const getMe = async () => {
   }
 };
 
-export const editUser = async ({ name, email, interests }) => {
+export const editUser = async ({ name }) => {
   try {
     const accessToken = localStorage.getItem("accessToken");
     const response = await instance.put(
       `/api/user/v1/name`,
-      { name, email },
+      { name: name },
       {
         headers: {
           "Content-Type": "application/json",
@@ -122,17 +122,14 @@ export const getUserFavorites = async () => {
 
 export const logout = async () => {
   try {
-    // const refreshToken = localStorage.getItem("refreshToken");
     const accessToken = localStorage.getItem("accessToken");
 
-    const response = await instance.delete("/api/user/v1/logout", {
+    const response = await instance.post("/api/user/v1/logout", {
       headers: {
-        // refreshToken: `${refreshToken}`,
         Authorization: `Bearer ${accessToken}`,
       },
     });
     localStorage.removeItem("accessToken");
-    // localStorage.removeItem("refreshToken");
     return response.data;
   } catch (error) {
     console.log(error);
