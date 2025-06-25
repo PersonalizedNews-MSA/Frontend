@@ -1,7 +1,8 @@
 import instance from "./axiosInstance";
 
 //TODO: 관심사 등록 API
-export const postInterest = async ({ interests }) => {
+export const postInterest = async (interests) => {
+  const accessToken = localStorage.getItem("accessToken");
   console.log("관심사 등록 API 호출");
   console.log("keywords :" + interests);
   try {
@@ -10,7 +11,11 @@ export const postInterest = async ({ interests }) => {
       {
         name: interests,
       },
-      { headers: { "Content-Type": "application/json" } }
+      { headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
     );
     return response.data;
   } catch (error) {

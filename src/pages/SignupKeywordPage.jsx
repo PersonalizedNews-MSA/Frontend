@@ -101,7 +101,7 @@ const SignupKeywordPage = () => {
             width="full"
             onClick={async () => {
               try {
-                await postInterest({ keywords });
+                await postInterest(keywords);
                 navigate("/login");
               } catch (err) {
                 console.error("❌ 키워드 추가 실패 ❌:", err);
