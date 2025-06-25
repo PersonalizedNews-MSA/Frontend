@@ -11,7 +11,7 @@ const NewsList = ({ url, isHome }) => {
   const fetchNews = async (start) => {
     const accessToken = localStorage.getItem("accessToken");
     try {
-      const requestUrl = isHome ? url : `${url}?startPage=${start}`;
+      const requestUrl = isHome ? `${url}?startPage=${start}`: url;
       const res = await instance.get(requestUrl, {
         headers: {
           "Content-Type": "application/json",
@@ -19,7 +19,7 @@ const NewsList = ({ url, isHome }) => {
         },
       });
       setLoadingArticles(false);
-      setArticles(res.data.newsList);
+      setArticles(isHome ? res.data.newsList : res.data);
     } catch (err) {
       console.error(err);
     }

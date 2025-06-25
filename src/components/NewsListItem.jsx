@@ -11,7 +11,7 @@ const NewsListItem = ({
   description,
   thumbnail,
   initiallyLiked = false,
-  initialFavId = null,
+  initialFavId,
 }) => {
   const [liked, setLiked] = useState(initiallyLiked);
   const [favoriteId, setFavoriteId] = useState(initialFavId);

@@ -94,7 +94,7 @@ const MypageFavorites = () => {
                       description={article.newsSummary}
                       thumbnail={article.newsThumbnail}
                       initiallyLiked={true}
-                      initialFavId={fav?.id}
+                      initialFavId={article.id}
                     />
                   </Dialog.Trigger>
                 </Box>

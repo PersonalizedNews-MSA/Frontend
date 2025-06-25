@@ -36,7 +36,7 @@ export default function Search({ onSearch }) {
             borderColor="gray.300"
             _focus={{ borderColor: "gray.500", boxShadow: "none" }}
             pr="40px"
-            color="white"
+            color="black"
             sx={{ caretColor: "black" }}
           />
           <Box
