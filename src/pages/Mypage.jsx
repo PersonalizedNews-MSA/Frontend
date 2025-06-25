@@ -24,8 +24,8 @@ import { Link } from "react-router-dom";
 
 import useUser from "../lib/useUser";
 import useUserFavorites from "../lib/useUserFavorites";
-import { getUserInterests } from "../api/user_api";
 import { useEffect, useState } from "react";
+import { getInterest } from "../api/interests_api";
 
 const Mypage = () => {
   const { userLoading, user } = useUser();
@@ -35,7 +35,7 @@ const Mypage = () => {
   useEffect(() => {
     const interests = async () => {
       try {
-        const res = await getUserInterests();
+        const res = await getInterest();
         setInterestsRes(res);
       } catch (err) {
         console.error("❌ 유저 최애 가져오기 실패 ❌:", err);

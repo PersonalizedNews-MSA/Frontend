@@ -1,4 +1,4 @@
-import { Box, Icon, VStack, Image, HStack, Flex, Text } from "@chakra-ui/react";
+import { Box, Icon, VStack, HStack, Flex, Text } from "@chakra-ui/react";
 
 import { FaChevronLeft } from "react-icons/fa";
 import { FiLogOut, FiTrash, FiChevronRight } from "react-icons/fi";
@@ -12,7 +12,7 @@ import useUser from "../lib/useUser";
 import { logout, deleteAccount } from "../api/user_api";
 
 const MypageSettings = () => {
-  const { userLoading, user, isLoggedIn } = useUser();
+  const { userLoading, user } = useUser();
   const navigate = useNavigate();
   return (
     <Box>
@@ -66,7 +66,7 @@ const MypageSettings = () => {
               _hover={{ bg: "gray.50", cursor: "pointer" }}
               onClick={async () => {
                 try {
-                  const res = await logout();
+                  await logout();
                   navigate("/");
                 } catch (err) {
                   console.error("❌ 로그아웃 실패 ❌:", err);
@@ -89,7 +89,8 @@ const MypageSettings = () => {
               _hover={{ bg: "gray.50", cursor: "pointer" }}
               onClick={async () => {
                 try {
-                  const res = await deleteAccount();
+                  await deleteAccount();
+
                   navigate("/");
                 } catch (err) {
                   console.error("❌ 회원 탈퇴 실패 ❌:", err);

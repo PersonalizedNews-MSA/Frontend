@@ -1,6 +1,7 @@
 import { jwtDecode } from "jwt-decode";
 
 import instance from "./axiosInstance";
+import { deleteInterest } from "./interests_api";
 
 // UNAUTHORIZED APIS
 
@@ -10,7 +11,7 @@ export const login = async ({ email, password }) => {
   console.log("Password :" + password);
   try {
     const response = await instance.post(
-      "/login",
+      "/api/user/v1/auth/login",
       {
         email,
         password,
@@ -23,19 +24,18 @@ export const login = async ({ email, password }) => {
   }
 };
 
-export const signup = async ({ email, password, name, interests }) => {
+export const signup = async ({ email, password, name }) => {
   console.log("Signup API 호출");
   console.log("Email :" + email);
   console.log("Password :" + password);
   console.log("Name :" + name);
   try {
     const response = await instance.post(
-      "/sign-up",
+      "/api/user/v1/auth/signup",
       {
         email,
         password,
         name,
-        interests,
       },
       { headers: { "Content-Type": "application/json" } }
     );
@@ -44,56 +44,18 @@ export const signup = async ({ email, password, name, interests }) => {
     throw error.response ? error.response.data : error;
   }
 };
-
 
 export const checkEmail = async (email) => {
   console.log("Check Email API 호출:", email);
   try {
     const response = await instance.post(
-      "/email",
+      "/api/user/v1/auth/email-check",
       { email },
       { headers: { "Content-Type": "application/json" } }
     );
-    return response.data;         
+    return response.data;
   } catch (error) {
     throw error.response?.data || error;
-  }
-};
-
-
-export const addInterest = async ({ userId, keywords }) => {
-  console.log("Add Interest API 호출");
-  console.log("UserId :" + userId);
-  console.log("Name :" + keywords);
-  try {
-    const response = await instance.post(
-      "/interest",
-      {
-        userId,
-        name: keywords,
-      },
-      { headers: { "Content-Type": "application/json" } }
-    );
-    return response.data;
-  } catch (error) {
-    throw error.response ? error.response.data : error;
-  }
-};
-
-export const deleteInterest = async ({ userId, removeKeyword }) => {
-  console.log("Delete Interest API 호출");
-  console.log("UserId :" + userId);
-  console.log("Name :" + removeKeyword);
-  try {
-    const response = await instance.delete(`/interest/delete/${userId}`, {
-      data: {
-        name: removeKeyword,
-      },
-      headers: { "Content-Type": "application/json" },
-    });
-    return response.data;
-  } catch (error) {
-    throw error.response ? error.response.data : error;
   }
 };
 
@@ -102,10 +64,10 @@ export const getMe = async () => {
   try {
     const accessToken = localStorage.getItem("accessToken");
     console.log("accessToken : " + accessToken);
-    const decode = jwtDecode(accessToken);
-    console.log("userId : " + decode.userId);
+    // const decode = jwtDecode(accessToken);
+    // console.log("userId : " + decode.userId);
 
-    const response = await instance.get(`/user/${decode.userId}`, {
+    const response = await instance.get(`/api/user/v1/profile`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
@@ -122,8 +84,8 @@ export const editUser = async ({ name, email, interests }) => {
   try {
     const accessToken = localStorage.getItem("accessToken");
     const response = await instance.put(
-      `/user`,
-      { name, email, interests },
+      `/api/user/v1/name`,
+      { name, email },
       {
         headers: {
           "Content-Type": "application/json",
@@ -160,17 +122,17 @@ export const getUserFavorites = async () => {
 
 export const logout = async () => {
   try {
-    const refreshToken = localStorage.getItem("refreshToken");
+    // const refreshToken = localStorage.getItem("refreshToken");
     const accessToken = localStorage.getItem("accessToken");
 
-    const response = await instance.delete("/logout", {
+    const response = await instance.delete("/api/user/v1/logout", {
       headers: {
-        refreshToken: `${refreshToken}`,
+        // refreshToken: `${refreshToken}`,
         Authorization: `Bearer ${accessToken}`,
       },
     });
     localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
+    // localStorage.removeItem("refreshToken");
     return response.data;
   } catch (error) {
     console.log(error);
@@ -182,13 +144,15 @@ export const deleteAccount = async () => {
   try {
     const accessToken = localStorage.getItem("accessToken");
 
-    const response = await instance.delete("/user", {
+    const response = await instance.delete("/api/user/v1/signout", {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     });
+    await deleteInterest();
+
     localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
+    // localStorage.removeItem("refreshToken");
     return response.data;
   } catch (error) {
     console.log(error);
@@ -196,22 +160,22 @@ export const deleteAccount = async () => {
   }
 };
 
-export const getUserInterests = async () => {
-  try {
-    const accessToken = localStorage.getItem("accessToken");
-    console.log("accessToken : " + accessToken);
-    const decode = jwtDecode(accessToken);
-    console.log("userId : " + decode.userId);
+// export const getUserInterests = async () => {
+//   try {
+//     const accessToken = localStorage.getItem("accessToken");
+//     console.log("accessToken : " + accessToken);
+//     const decode = jwtDecode(accessToken);
+//     console.log("userId : " + decode.userId);
 
-    const response = await instance.get(`/interest/${decode.userId}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.log(error);
-    throw error.response ? error.response.data : error;
-  }
-};
+//     const response = await instance.get(`/interest/${decode.userId}`, {
+//       headers: {
+//         "Content-Type": "application/json",
+//         Authorization: `Bearer ${accessToken}`,
+//       },
+//     });
+//     return response.data;
+//   } catch (error) {
+//     console.log(error);
+//     throw error.response ? error.response.data : error;
+//   }
+// };

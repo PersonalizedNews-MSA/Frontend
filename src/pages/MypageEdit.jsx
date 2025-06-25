@@ -21,12 +21,12 @@ import { CgProfile } from "react-icons/cg";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import useUser from "../lib/useUser";
-import { getUserInterests, editUser } from "../api/user_api";
+import { editUser } from "../api/user_api";
 import { useForm } from "react-hook-form";
+import { getInterest, putInterest } from "../api/interests_api";
 
 const MypageEdit = () => {
   const { userLoading, user, isLoggedIn } = useUser();
-  const [interestsRes, setInterestsRes] = useState([]);
 
   const [keyword, setKeyword] = useState("");
   const [keywords, setKeywords] = useState([]);
@@ -50,8 +50,8 @@ const MypageEdit = () => {
   useEffect(() => {
     const interests = async () => {
       try {
-        const res = await getUserInterests();
-        setInterestsRes(res);
+        const res = await getInterest();
+
         setKeywords(res.map((i) => i.name));
       } catch (err) {
         console.error("❌ 유저 최애 가져오기 실패 ❌:", err);
@@ -66,7 +66,10 @@ const MypageEdit = () => {
         ...data,
         interests: keywords,
       };
-      const res = await editUser(payload);
+      await editUser(payload);
+      if (keywords && keywords.length > 0) {
+        await putInterest(keywords);
+      }
       navigate("/mypage");
     } catch (err) {
       console.error("❌ 회원수정 실패 ❌:", err);
