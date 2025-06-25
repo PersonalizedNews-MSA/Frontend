@@ -15,26 +15,20 @@ const NewsList = ({ url, isHome }) => {
   const [articles, setArticles] = useState([]);
   const [loadingArticles, setLoadingArticles] = useState(true);
 
-  const [start, setStart] = useState(1); // 현재 페이지
+  const [start, setStart] = useState(10); // 현재 페이지
   const fetchNews = async (start) => {
+    const accessToken = localStorage.getItem("accessToken");
     try {
-      const accessToken = localStorage.getItem("accessToken");
-      let res;
-      if (isHome) {
-        res = await instance.get(`${url}/${start}`, {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        });
-        setArticles(res.data.newsList);
-      } else {
-        res = await instance.get(`${url}`, {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        });
-        setArticles(res.data);
-      }
+      const res = await instance.get(`${url}?startPage=${start}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      setLoadingArticles(false);
+      setArticles(res.data.newsList);
     } catch (err) {
       console.error(err);
-    } finally {
-      setLoadingArticles(false);
     }
   };
 

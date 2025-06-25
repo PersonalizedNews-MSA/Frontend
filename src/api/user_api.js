@@ -124,7 +124,7 @@ export const logout = async () => {
   try {
     const accessToken = localStorage.getItem("accessToken");
 
-    const response = await instance.post("/api/user/v1/logout", {
+    const response = await instance.post("/api/user/v1/logout",{}, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },

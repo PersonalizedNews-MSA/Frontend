@@ -33,7 +33,7 @@ const Searchpage = () => {
 
         {keyword && (
           <NewsList
-            url={`/news/search/${encodeURIComponent(keyword)}`}
+            url={`/api/search/v1/${keyword}`}
             isHome={false}
           />
         )}

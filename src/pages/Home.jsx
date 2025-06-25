@@ -1,8 +1,7 @@
 import { Box, Text, VStack, Flex } from "@chakra-ui/react";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
-import NewsList from "../components/NewsList"; // 경로 맞춰주세요
-// import { getUserInterests } from "../api/user_api";
+import NewsList from "../components/NewsList";
 import React, { useEffect, useState } from "react";
 import { getInterest } from "../api/interests_api";
 
@@ -40,7 +39,7 @@ const Home = () => {
             </Text>
           )}
         </VStack>
-        <NewsList url={`/news/ai`} isHome={true} />
+        <NewsList url={`/api/news/v1/ai`} isHome={true} />
       </Flex>
       <Footer />
     </Box>

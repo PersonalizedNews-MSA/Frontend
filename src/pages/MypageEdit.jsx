@@ -72,9 +72,7 @@ const MypageEdit = () => {
       if (data.name && data.name.length > 0) {
         await editUser(payload);
       }
-      if (keywords && keywords.length > 0) {
-        await putInterest(keywords);
-      }
+      await putInterest(keywords);
       navigate("/mypage");
     } catch (err) {
       console.error("❌ 회원수정 실패 ❌:", err);
