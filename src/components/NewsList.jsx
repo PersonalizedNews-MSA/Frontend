@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Button,
-  Flex,
-  HStack,
-  Skeleton,
-  SkeletonText,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import NewsDialog from "../components/NewsDialog";
 import instance from "../api/axiosInstance";
 
@@ -19,7 +11,8 @@ const NewsList = ({ url, isHome }) => {
   const fetchNews = async (start) => {
     const accessToken = localStorage.getItem("accessToken");
     try {
-      const res = await instance.get(`${url}?startPage=${start}`, {
+      const requestUrl = isHome ? url : `${url}?startPage=${start}`;
+      const res = await instance.get(requestUrl, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
