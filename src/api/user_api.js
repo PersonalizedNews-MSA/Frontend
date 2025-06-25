@@ -58,41 +58,41 @@ export const checkEmail = async (email) => {
   }
 };
 
-export const addInterest = async ({ userId, keywords }) => {
-  console.log("Add Interest API 호출");
-  console.log("UserId :" + userId);
-  console.log("Name :" + keywords);
-  try {
-    const response = await instance.post(
-      "/interest",
-      {
-        userId,
-        name: keywords,
-      },
-      { headers: { "Content-Type": "application/json" } }
-    );
-    return response.data;
-  } catch (error) {
-    throw error.response ? error.response.data : error;
-  }
-};
+// export const addInterest = async ({ userId, keywords }) => {
+//   console.log("Add Interest API 호출");
+//   console.log("UserId :" + userId);
+//   console.log("Name :" + keywords);
+//   try {
+//     const response = await instance.post(
+//       "/interest",
+//       {
+//         userId,
+//         name: keywords,
+//       },
+//       { headers: { "Content-Type": "application/json" } }
+//     );
+//     return response.data;
+//   } catch (error) {
+//     throw error.response ? error.response.data : error;
+//   }
+// };
 
-export const deleteInterest = async ({ userId, removeKeyword }) => {
-  console.log("Delete Interest API 호출");
-  console.log("UserId :" + userId);
-  console.log("Name :" + removeKeyword);
-  try {
-    const response = await instance.delete(`/interest/delete/${userId}`, {
-      data: {
-        name: removeKeyword,
-      },
-      headers: { "Content-Type": "application/json" },
-    });
-    return response.data;
-  } catch (error) {
-    throw error.response ? error.response.data : error;
-  }
-};
+// export const deleteInterest = async ({ userId, removeKeyword }) => {
+//   console.log("Delete Interest API 호출");
+//   console.log("UserId :" + userId);
+//   console.log("Name :" + removeKeyword);
+//   try {
+//     const response = await instance.delete(`/interest/delete/${userId}`, {
+//       data: {
+//         name: removeKeyword,
+//       },
+//       headers: { "Content-Type": "application/json" },
+//     });
+//     return response.data;
+//   } catch (error) {
+//     throw error.response ? error.response.data : error;
+//   }
+// };
 
 // AUTHORIZED APIS
 export const getMe = async () => {
