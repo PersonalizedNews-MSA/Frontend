@@ -40,7 +40,7 @@ const MypageFavorites = () => {
       try {
         const token = localStorage.getItem("accessToken");
         const res = await instance.post(
-          "/news/summary",
+          "/api/summary/v1",
           { link: articles[selectedIndex].newsLink },
           { headers: { Authorization: `Bearer ${token}` } }
         );

@@ -45,7 +45,7 @@ const NewsDialog = ({ articles, loading, contextLabel = "뉴스", isHome }) => {
       try {
         const token = localStorage.getItem("accessToken");
         const res = await instance.post(
-          "/news/summary",
+          "/api/summary/v1",
           { link: articles[selectedIndex].link },
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -70,7 +70,9 @@ const NewsDialog = ({ articles, loading, contextLabel = "뉴스", isHome }) => {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" py={20}>
         <Spinner size="lg" mr={4} />
-        <Text fontSize="lg" color="black">{loadingMessage}</Text>
+        <Text fontSize="lg" color="black">
+          {loadingMessage}
+        </Text>
       </Box>
     );
   }
@@ -159,7 +161,7 @@ const NewsDialog = ({ articles, loading, contextLabel = "뉴스", isHome }) => {
                     fontSize: "1.25rem",
                     fontWeight: "bold",
                     marginBottom: "0.5rem",
-                    color: "black"
+                    color: "black",
                   }}
                 >
                   {contextLabel} #{index + 1} - {article.title}
@@ -191,7 +193,7 @@ const NewsDialog = ({ articles, loading, contextLabel = "뉴스", isHome }) => {
                     justifyContent="center"
                     gap={6}
                   >
-                    <Spinner size="md" color="gray.500"/>
+                    <Spinner size="md" color="gray.500" />
                     <Text color="gray.500">뉴스 내용을 요약 중입니다.</Text>
                   </Box>
                 ) : summaryError ? (
